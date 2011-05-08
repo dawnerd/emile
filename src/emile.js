@@ -28,7 +28,7 @@
       prefix = _prefix;
     }
   }
-  var transitionEnd = /^w/.test(prefix) ? 'webkitTransitionEnd' : 'transitionend';
+  var transitionEnd = /^w/.test(prefix) ? 'webkitTransitionEnd' : /^O/.test(prefix) ? 'OTransitionEnd' : 'transitionend';
   for (var p = pixelProps.split(' '), i = p.length; i--;) {
     animationProperties[p[i]] = 1;
   }
