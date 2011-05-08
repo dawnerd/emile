@@ -148,10 +148,12 @@
     var props = [],
         styles = [],
         duration = opts.duration || 1000,
-        easing = opts.easing || 'ease-out';
+        easing = opts.easing || 'ease-out',
+        newStyle = '';
     duration = duration + 'ms';
-    opts.after && el.addEventListener(transitionEnd, function f() {
-      opts.after();
+    el.addEventListener(transitionEnd, function f() {
+	  el.setAttribute('style', newStyle);
+      if(opts.after) opts.after();
       el.removeEventListener(transitionEnd, f, true);
     }, true);
 
@@ -160,12 +162,13 @@
       for (k in o) {
         o.hasOwnProperty(k) && props.push(camelToDash(k) + ' ' + duration + ' ' + easing);
       }
-      props = props.join(',');
-      el.style[prefix + 'Transition'] = props;
       for (k in o) {
         var v = (camelize(k) in animationProperties) && d.test(o[k]) ? o[k] + 'px' : o[k];
         o.hasOwnProperty(k) && (el.style[camelize(k)] = v);
       }
+      newStyle = el.getAttribute('style');
+      props = props.join(',');
+      el.style[prefix + 'Transition'] = props;
     }, 10);
 
   }
